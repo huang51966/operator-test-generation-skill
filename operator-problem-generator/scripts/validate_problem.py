@@ -17,6 +17,21 @@ REQUIRED_TOP_LEVEL = {
     "test_cases",
 }
 
+ALLOWED_DTYPES = {
+    "bool",
+    "int8",
+    "int16",
+    "int32",
+    "int64",
+    "uint8",
+    "uint16",
+    "uint32",
+    "uint64",
+    "float16",
+    "float32",
+    "float64",
+}
+
 
 def fail(message: str) -> None:
     raise SystemExit(f"error: {message}")
@@ -47,6 +62,36 @@ def require_name_set(items: list, label: str) -> set[str]:
     return names
 
 
+def validate_shape(value: object, label: str) -> None:
+    if not isinstance(value, list):
+        fail(f"{label} must be a list")
+    for index, dim in enumerate(value):
+        if not isinstance(dim, int) or dim < 0:
+            fail(f"{label}[{index}] must be a non-negative integer")
+
+
+def validate_concrete_tensor(item: dict, label: str) -> None:
+    dtype = item.get("dtype")
+    if not isinstance(dtype, str) or dtype not in ALLOWED_DTYPES:
+        fail(f"{label}.dtype must be one of: {', '.join(sorted(ALLOWED_DTYPES))}")
+    validate_shape(item.get("shape"), f"{label}.shape")
+
+
+def validate_prototype_tensor(item: dict, label: str) -> None:
+    kind = item.get("kind")
+    if kind != "tensor":
+        fail(f"{label}.kind must be 'tensor'")
+    dtype = item.get("dtype")
+    if not isinstance(dtype, list) or not dtype:
+        fail(f"{label}.dtype must be a non-empty list")
+    for index, value in enumerate(dtype):
+        if not isinstance(value, str) or value not in ALLOWED_DTYPES:
+            fail(f"{label}.dtype[{index}] must be one of: {', '.join(sorted(ALLOWED_DTYPES))}")
+    shape = item.get("shape")
+    if not isinstance(shape, list) or not shape:
+        fail(f"{label}.shape must be a non-empty list")
+
+
 def validate(path: Path) -> None:
     try:
         data = json.loads(path.read_text(encoding="utf-8"))
@@ -72,6 +117,10 @@ def validate(path: Path) -> None:
     outputs = require_list(root["outputs"], "outputs")
     input_names = require_name_set(inputs, "inputs")
     output_names = require_name_set(outputs, "outputs")
+    for index, item in enumerate(inputs):
+        validate_prototype_tensor(item, f"inputs[{index}]")
+    for index, item in enumerate(outputs):
+        validate_prototype_tensor(item, f"outputs[{index}]")
 
     test_cases = require_list(root["test_cases"], "test_cases")
     for case_index, case in enumerate(test_cases):
@@ -84,6 +133,10 @@ def validate(path: Path) -> None:
             fail(f"test_cases[{case_index}] input names do not match prototype inputs")
         if case_output_names != output_names:
             fail(f"test_cases[{case_index}] output names do not match prototype outputs")
+        for input_index, item in enumerate(case_inputs):
+            validate_concrete_tensor(item, f"test_cases[{case_index}].inputs[{input_index}]")
+        for output_index, item in enumerate(case_outputs):
+            validate_concrete_tensor(item, f"test_cases[{case_index}].outputs[{output_index}]")
 
 
 def main(argv: list[str]) -> int:

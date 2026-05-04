@@ -1,0 +1,56 @@
+{
+  "schema_version": "0.1-draft",
+  "operator": {
+    "name": "sum",
+    "summary": "Sum a tensor along axis 1.",
+    "category": "reduction"
+  },
+  "reference": {
+    "file": "reference.py",
+    "function": "reference"
+  },
+  "inputs": [
+    {
+      "name": "x",
+      "kind": "tensor",
+      "dtype": ["float32"],
+      "shape": ["rank>=2"]
+    }
+  ],
+  "outputs": [
+    {
+      "name": "out",
+      "kind": "tensor",
+      "dtype": ["float32"],
+      "shape": ["remove_dim(x, 1)"]
+    }
+  ],
+  "attributes": [
+    {"name": "axis", "type": "int", "value": 1},
+    {"name": "keepdims", "type": "bool", "value": false}
+  ],
+  "test_cases": [
+    {
+      "name": "matrix_axis_1_float32",
+      "inputs": [
+        {"name": "x", "dtype": "float32", "shape": [2, 3]}
+      ],
+      "outputs": [
+        {"name": "out", "dtype": "float32", "shape": [2]}
+      ]
+    },
+    {
+      "name": "rank3_axis_1_float32",
+      "inputs": [
+        {"name": "x", "dtype": "float32", "shape": [2, 3, 4]}
+      ],
+      "outputs": [
+        {"name": "out", "dtype": "float32", "shape": [2, 4]}
+      ]
+    }
+  ],
+  "tolerance": {
+    "rtol": 1e-05,
+    "atol": 1e-08
+  }
+}

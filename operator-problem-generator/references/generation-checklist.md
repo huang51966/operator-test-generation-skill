@@ -9,6 +9,8 @@ Use this checklist before marking generated files as ready.
 - Test case input names match the prototype input names.
 - Test case output names match the prototype output names.
 - Dtypes use the agreed website vocabulary.
+- Each test input and output has a concrete `dtype` and `shape`.
+- Prototype dtypes are lists; test-case dtypes are concrete strings.
 
 ## Reference Implementation
 

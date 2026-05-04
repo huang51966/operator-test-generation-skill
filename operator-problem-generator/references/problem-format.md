@@ -30,6 +30,7 @@ Each problem directory contains:
   "outputs": [
     {"name": "out", "kind": "tensor", "dtype": ["float32"], "shape": ["broadcast(x, y)"]}
   ],
+  "attributes": [],
   "test_cases": [
     {
       "name": "same_shape_float32",
@@ -62,6 +63,19 @@ def reference(x: np.ndarray, y: np.ndarray) -> np.ndarray:
 ```
 
 For multiple outputs, return a tuple of NumPy arrays in the same order as `outputs`.
+
+## Attribute Policy
+
+The draft schema supports an optional `attributes` list for documenting fixed operator parameters such as `axis`, `keepdims`, or `alpha`.
+
+In v2, attributes are metadata only. The Python reference should close over fixed values directly:
+
+```python
+def reference(x: np.ndarray) -> np.ndarray:
+    return np.sum(x, axis=1)
+```
+
+Do not add dynamic per-test attributes until the real website format is known.
 
 ## Open Items To Freeze With Real Examples
 

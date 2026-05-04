@@ -8,3 +8,5 @@ Current scope:
 - NumPy reference implementation template
 - structural JSON validator
 - reference smoke-test runner
+- directory-level validation for batches
+- five MVP examples: `add`, `abs`, `maximum`, `sum`, `equal`

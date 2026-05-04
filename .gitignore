@@ -1,0 +1,4 @@
+__pycache__/
+*.py[cod]
+operator-problem-generator/reports/
+operator-problem-generator/generated/

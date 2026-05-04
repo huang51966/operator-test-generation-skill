@@ -1,8 +1,8 @@
 {
   "schema_version": "0.1-draft",
   "operator": {
-    "name": "operator_name",
-    "summary": "Short operator semantics.",
+    "name": "abs",
+    "summary": "Elementwise absolute value.",
     "category": "pointwise"
   },
   "reference": {
@@ -13,7 +13,7 @@
     {
       "name": "x",
       "kind": "tensor",
-      "dtype": ["float32"],
+      "dtype": ["float32", "int32"],
       "shape": ["*"]
     }
   ],
@@ -21,27 +21,28 @@
     {
       "name": "out",
       "kind": "tensor",
-      "dtype": ["float32"],
+      "dtype": ["float32", "int32"],
       "shape": ["same_as(x)"]
     }
   ],
   "attributes": [],
   "test_cases": [
     {
-      "name": "basic_float32",
+      "name": "float32_matrix",
       "inputs": [
-        {
-          "name": "x",
-          "dtype": "float32",
-          "shape": [2, 3]
-        }
+        {"name": "x", "dtype": "float32", "shape": [2, 3]}
       ],
       "outputs": [
-        {
-          "name": "out",
-          "dtype": "float32",
-          "shape": [2, 3]
-        }
+        {"name": "out", "dtype": "float32", "shape": [2, 3]}
+      ]
+    },
+    {
+      "name": "int32_vector",
+      "inputs": [
+        {"name": "x", "dtype": "int32", "shape": [5]}
+      ],
+      "outputs": [
+        {"name": "out", "dtype": "int32", "shape": [5]}
       ]
     }
   ],

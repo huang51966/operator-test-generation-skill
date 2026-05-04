@@ -1,0 +1,61 @@
+{
+  "schema_version": "0.1-draft",
+  "operator": {
+    "name": "add",
+    "summary": "Elementwise addition with NumPy broadcasting.",
+    "category": "pointwise"
+  },
+  "reference": {
+    "file": "reference.py",
+    "function": "reference"
+  },
+  "inputs": [
+    {
+      "name": "x",
+      "kind": "tensor",
+      "dtype": ["float32", "int32"],
+      "shape": ["*"]
+    },
+    {
+      "name": "y",
+      "kind": "tensor",
+      "dtype": ["float32", "int32"],
+      "shape": ["*"]
+    }
+  ],
+  "outputs": [
+    {
+      "name": "out",
+      "kind": "tensor",
+      "dtype": ["float32", "int32"],
+      "shape": ["broadcast(x, y)"]
+    }
+  ],
+  "attributes": [],
+  "test_cases": [
+    {
+      "name": "same_shape_float32",
+      "inputs": [
+        {"name": "x", "dtype": "float32", "shape": [2, 3]},
+        {"name": "y", "dtype": "float32", "shape": [2, 3]}
+      ],
+      "outputs": [
+        {"name": "out", "dtype": "float32", "shape": [2, 3]}
+      ]
+    },
+    {
+      "name": "broadcast_int32",
+      "inputs": [
+        {"name": "x", "dtype": "int32", "shape": [2, 3]},
+        {"name": "y", "dtype": "int32", "shape": [3]}
+      ],
+      "outputs": [
+        {"name": "out", "dtype": "int32", "shape": [2, 3]}
+      ]
+    }
+  ],
+  "tolerance": {
+    "rtol": 1e-05,
+    "atol": 1e-08
+  }
+}
