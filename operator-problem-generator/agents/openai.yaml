@@ -1,0 +1,4 @@
+interface:
+  display_name: "Operator Problem Generator"
+  short_description: "Generate validated operator problem JSON and NumPy references."
+  default_prompt: "Use $operator-problem-generator to generate website-ready operator problem assets from an operator spec."
