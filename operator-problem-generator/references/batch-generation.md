@@ -1,8 +1,8 @@
-# Batch Generation
+# 批量生成
 
-Use this reference when generating more than one operator problem.
+生成多个算子题时使用本参考。
 
-## Directory Layout
+## 目录布局
 
 ```text
 generated/
@@ -19,7 +19,7 @@ generated/
     validation-report.json
 ```
 
-For bundled examples, use:
+内置样例目录：
 
 ```text
 examples/
@@ -28,29 +28,30 @@ examples/
   maximum/
   sum/
   equal/
+  tensor_sum/
 ```
 
-## Generation Order
+## 生成顺序
 
-1. Create a design card for each operator.
-2. Generate `problem.json`.
-3. Generate `reference.py`.
-4. Run per-problem validation.
-5. Run directory validation.
-6. Move only passing problems to `ready/`.
+1. 为每个算子创建设计卡。
+2. 生成 `problem.json`。
+3. 生成 `reference.py`。
+4. 运行单题验证。
+5. 运行目录级验证。
+6. 仅将通过验证的题目放入 `ready/`。
 
-## Report Fields
+## 报告字段
 
-Batch validation reports should include:
+批量验证报告应包含：
 
-- problem directory
-- validation status
-- failed stage, if any
-- error message, if any
-- total passed and failed counts
+- 题目目录
+- 验证状态
+- 失败阶段，如果存在
+- 错误信息，如果存在
+- 通过和失败数量统计
 
-## V2 Limits
+## 当前限制
 
-- Do not generate website import packages yet.
-- Do not infer the final website schema from the draft examples.
-- Do not include PyTorch as a runtime dependency in generated reference files.
+- 暂不生成网站导入压缩包。
+- 使用真实 `op/cpu_cases/npu_cases` 网站 schema。
+- 默认不在生成的标准实现中引入 PyTorch 运行时依赖。

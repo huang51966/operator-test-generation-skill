@@ -1,0 +1,76 @@
+{
+  "op": {
+    "name": "TensorSum",
+    "impl": "reference:impl",
+    "input_desc": [
+      {"name": "x_list", "type": "dynamic", "datatype": ["half", "float"]},
+      {"name": "initial", "type": "required", "datatype": ["half", "float"]},
+      {"name": "bias", "type": "optional", "datatype": ["half", "float"]}
+    ],
+    "output_desc": [
+      {"name": "out", "type": "required", "datatype": ["half", "float"]},
+      {"name": "norm", "type": "optional", "datatype": ["float", "float"]}
+    ],
+    "attr_desc": [
+      {"name": "p", "type": "required", "datatype": "int"},
+      {"name": "need_norm", "type": "optional", "datatype": "bool", "default_value": false}
+    ]
+  },
+  "cpu_cases": [
+    {
+      "input": [
+        [
+          {"datatype": "float", "shape": 4, "range": [-10.0, 10.0]},
+          {"datatype": "float", "shape": 4, "range": [-10.0, 10.0]}
+        ],
+        {"datatype": "float", "shape": 4, "range": [-1.0, 1.0]},
+        []
+      ],
+      "output": [
+        {"datatype": "float", "shape": 4},
+        []
+      ],
+      "attr": [
+        {"name": "p", "value": 2}
+      ]
+    },
+    {
+      "input": [
+        [
+          {"datatype": "half", "shape": [2, 3], "range": [-1.0, 1.0]},
+          {"datatype": "half", "shape": [2, 3], "range": [-1.0, 1.0]}
+        ],
+        {"datatype": "half", "shape": [2, 3], "range": [-1.0, 1.0]},
+        {"datatype": "half", "shape": [2, 3], "range": [-1.0, 1.0]}
+      ],
+      "output": [
+        {"datatype": "half", "shape": [2, 3]},
+        {"datatype": "float", "shape": 1}
+      ],
+      "attr": [
+        {"name": "need_norm", "value": true},
+        {"name": "p", "value": 1}
+      ]
+    }
+  ],
+  "npu_cases": [
+    {
+      "input": [
+        [
+          {"datatype": "float", "shape": [64, 64], "range": [-10.0, 10.0]},
+          {"datatype": "float", "shape": [64, 64], "range": [-10.0, 10.0]},
+          {"datatype": "float", "shape": [64, 64], "range": [-10.0, 10.0]}
+        ],
+        {"datatype": "float", "shape": [64, 64], "range": [-1.0, 1.0]},
+        []
+      ],
+      "output": [
+        {"datatype": "float", "shape": [64, 64]},
+        []
+      ],
+      "attr": [
+        {"name": "p", "value": 2}
+      ]
+    }
+  ]
+}

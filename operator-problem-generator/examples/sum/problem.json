@@ -1,56 +1,54 @@
 {
-  "schema_version": "0.1-draft",
-  "operator": {
-    "name": "sum",
-    "summary": "Sum a tensor along axis 1.",
-    "category": "reduction"
+  "op": {
+    "name": "Sum",
+    "impl": "reference:impl",
+    "input_desc": [
+      {"name": "x", "type": "required", "datatype": ["float"]}
+    ],
+    "output_desc": [
+      {"name": "out", "type": "required", "datatype": ["float"]}
+    ],
+    "attr_desc": [
+      {"name": "axis", "type": "required", "datatype": "int"},
+      {"name": "keepdims", "type": "optional", "datatype": "bool", "default_value": false}
+    ]
   },
-  "reference": {
-    "file": "reference.py",
-    "function": "reference"
-  },
-  "inputs": [
+  "cpu_cases": [
     {
-      "name": "x",
-      "kind": "tensor",
-      "dtype": ["float32"],
-      "shape": ["rank>=2"]
-    }
-  ],
-  "outputs": [
-    {
-      "name": "out",
-      "kind": "tensor",
-      "dtype": ["float32"],
-      "shape": ["remove_dim(x, 1)"]
-    }
-  ],
-  "attributes": [
-    {"name": "axis", "type": "int", "value": 1},
-    {"name": "keepdims", "type": "bool", "value": false}
-  ],
-  "test_cases": [
-    {
-      "name": "matrix_axis_1_float32",
-      "inputs": [
-        {"name": "x", "dtype": "float32", "shape": [2, 3]}
+      "input": [
+        {"datatype": "float", "shape": [2, 3], "range": [-1.0, 1.0]}
       ],
-      "outputs": [
-        {"name": "out", "dtype": "float32", "shape": [2]}
+      "output": [
+        {"datatype": "float", "shape": 2}
+      ],
+      "attr": [
+        {"name": "axis", "value": 1}
       ]
     },
     {
-      "name": "rank3_axis_1_float32",
-      "inputs": [
-        {"name": "x", "dtype": "float32", "shape": [2, 3, 4]}
+      "input": [
+        {"datatype": "float", "shape": [2, 3, 4], "range": [-1.0, 1.0]}
       ],
-      "outputs": [
-        {"name": "out", "dtype": "float32", "shape": [2, 4]}
+      "output": [
+        {"datatype": "float", "shape": [2, 1, 4]}
+      ],
+      "attr": [
+        {"name": "axis", "value": 1},
+        {"name": "keepdims", "value": true}
       ]
     }
   ],
-  "tolerance": {
-    "rtol": 1e-05,
-    "atol": 1e-08
-  }
+  "npu_cases": [
+    {
+      "input": [
+        {"datatype": "float", "shape": [1024, 2048], "range": [-1.0, 1.0]}
+      ],
+      "output": [
+        {"datatype": "float", "shape": 1024}
+      ],
+      "attr": [
+        {"name": "axis", "value": 1}
+      ]
+    }
+  ]
 }

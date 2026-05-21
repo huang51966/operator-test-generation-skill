@@ -1,4 +1,4 @@
 interface:
-  display_name: "Operator Problem Generator"
-  short_description: "Generate validated operator problem JSON and NumPy references."
-  default_prompt: "Use $operator-problem-generator to generate website-ready operator problem assets from an operator spec."
+  display_name: "算子赛题生成器"
+  short_description: "生成并验证网站可导入的算子题 JSON 与 NumPy 标准实现。"
+  default_prompt: "使用 $operator-problem-generator 根据算子说明生成网站可导入的算子赛题文件。"

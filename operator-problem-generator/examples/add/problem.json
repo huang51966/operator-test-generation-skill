@@ -1,61 +1,48 @@
 {
-  "schema_version": "0.1-draft",
-  "operator": {
-    "name": "add",
-    "summary": "Elementwise addition with NumPy broadcasting.",
-    "category": "pointwise"
+  "op": {
+    "name": "Add",
+    "impl": "reference:impl",
+    "input_desc": [
+      {"name": "x", "type": "required", "datatype": ["float", "int32"]},
+      {"name": "y", "type": "required", "datatype": ["float", "int32"]}
+    ],
+    "output_desc": [
+      {"name": "out", "type": "required", "datatype": ["float", "int32"]}
+    ],
+    "attr_desc": []
   },
-  "reference": {
-    "file": "reference.py",
-    "function": "reference"
-  },
-  "inputs": [
+  "cpu_cases": [
     {
-      "name": "x",
-      "kind": "tensor",
-      "dtype": ["float32", "int32"],
-      "shape": ["*"]
+      "input": [
+        {"datatype": "float", "shape": [2, 3], "range": [-10.0, 10.0]},
+        {"datatype": "float", "shape": [2, 3], "range": [-10.0, 10.0]}
+      ],
+      "output": [
+        {"datatype": "float", "shape": [2, 3]}
+      ],
+      "attr": []
     },
     {
-      "name": "y",
-      "kind": "tensor",
-      "dtype": ["float32", "int32"],
-      "shape": ["*"]
-    }
-  ],
-  "outputs": [
-    {
-      "name": "out",
-      "kind": "tensor",
-      "dtype": ["float32", "int32"],
-      "shape": ["broadcast(x, y)"]
-    }
-  ],
-  "attributes": [],
-  "test_cases": [
-    {
-      "name": "same_shape_float32",
-      "inputs": [
-        {"name": "x", "dtype": "float32", "shape": [2, 3]},
-        {"name": "y", "dtype": "float32", "shape": [2, 3]}
+      "input": [
+        {"datatype": "int32", "shape": [2, 3], "range": [-10, 10]},
+        {"datatype": "int32", "shape": [3], "range": [-10, 10]}
       ],
-      "outputs": [
-        {"name": "out", "dtype": "float32", "shape": [2, 3]}
-      ]
-    },
-    {
-      "name": "broadcast_int32",
-      "inputs": [
-        {"name": "x", "dtype": "int32", "shape": [2, 3]},
-        {"name": "y", "dtype": "int32", "shape": [3]}
+      "output": [
+        {"datatype": "int32", "shape": [2, 3]}
       ],
-      "outputs": [
-        {"name": "out", "dtype": "int32", "shape": [2, 3]}
-      ]
+      "attr": []
     }
   ],
-  "tolerance": {
-    "rtol": 1e-05,
-    "atol": 1e-08
-  }
+  "npu_cases": [
+    {
+      "input": [
+        {"datatype": "float", "shape": [1024, 1024], "range": [-1.0, 1.0]},
+        {"datatype": "float", "shape": [1024, 1024], "range": [-1.0, 1.0]}
+      ],
+      "output": [
+        {"datatype": "float", "shape": [1024, 1024]}
+      ],
+      "attr": []
+    }
+  ]
 }

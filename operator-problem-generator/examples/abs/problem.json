@@ -1,53 +1,44 @@
 {
-  "schema_version": "0.1-draft",
-  "operator": {
-    "name": "abs",
-    "summary": "Elementwise absolute value.",
-    "category": "pointwise"
+  "op": {
+    "name": "Abs",
+    "impl": "reference:impl",
+    "input_desc": [
+      {"name": "x", "type": "required", "datatype": ["float", "int32"]}
+    ],
+    "output_desc": [
+      {"name": "out", "type": "required", "datatype": ["float", "int32"]}
+    ],
+    "attr_desc": []
   },
-  "reference": {
-    "file": "reference.py",
-    "function": "reference"
-  },
-  "inputs": [
+  "cpu_cases": [
     {
-      "name": "x",
-      "kind": "tensor",
-      "dtype": ["float32", "int32"],
-      "shape": ["*"]
-    }
-  ],
-  "outputs": [
-    {
-      "name": "out",
-      "kind": "tensor",
-      "dtype": ["float32", "int32"],
-      "shape": ["same_as(x)"]
-    }
-  ],
-  "attributes": [],
-  "test_cases": [
-    {
-      "name": "float32_matrix",
-      "inputs": [
-        {"name": "x", "dtype": "float32", "shape": [2, 3]}
+      "input": [
+        {"datatype": "float", "shape": [2, 3], "range": [-10.0, 10.0]}
       ],
-      "outputs": [
-        {"name": "out", "dtype": "float32", "shape": [2, 3]}
-      ]
+      "output": [
+        {"datatype": "float", "shape": [2, 3]}
+      ],
+      "attr": []
     },
     {
-      "name": "int32_vector",
-      "inputs": [
-        {"name": "x", "dtype": "int32", "shape": [5]}
+      "input": [
+        {"datatype": "int32", "shape": 5, "range": [-10, 10]}
       ],
-      "outputs": [
-        {"name": "out", "dtype": "int32", "shape": [5]}
-      ]
+      "output": [
+        {"datatype": "int32", "shape": 5}
+      ],
+      "attr": []
     }
   ],
-  "tolerance": {
-    "rtol": 1e-05,
-    "atol": 1e-08
-  }
+  "npu_cases": [
+    {
+      "input": [
+        {"datatype": "float", "shape": [2048, 1024], "range": [-100.0, 100.0]}
+      ],
+      "output": [
+        {"datatype": "float", "shape": [2048, 1024]}
+      ],
+      "attr": []
+    }
+  ]
 }

@@ -29,12 +29,21 @@ def run_command(args: list[str], cwd: Path) -> tuple[bool, str]:
 def validate_one(skill_root: Path, problem_dir: Path) -> dict:
     problem_json = problem_dir / "problem.json"
     reference_py = problem_dir / "reference.py"
+    statement_md = problem_dir / "statement.md"
     result = {
         "problem_dir": str(problem_dir),
         "status": "passed",
         "failed_stage": None,
         "message": "",
     }
+
+    if not statement_md.exists():
+        result.update(
+            status="failed",
+            failed_stage="layout",
+            message="statement.md not found",
+        )
+        return result
 
     if not reference_py.exists():
         result.update(

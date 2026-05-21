@@ -1,61 +1,48 @@
 {
-  "schema_version": "0.1-draft",
-  "operator": {
-    "name": "equal",
-    "summary": "Elementwise equality comparison with NumPy broadcasting.",
-    "category": "comparison"
+  "op": {
+    "name": "Equal",
+    "impl": "reference:impl",
+    "input_desc": [
+      {"name": "x", "type": "required", "datatype": ["int32", "float"]},
+      {"name": "y", "type": "required", "datatype": ["int32", "float"]}
+    ],
+    "output_desc": [
+      {"name": "out", "type": "required", "datatype": ["bool", "bool"]}
+    ],
+    "attr_desc": []
   },
-  "reference": {
-    "file": "reference.py",
-    "function": "reference"
-  },
-  "inputs": [
+  "cpu_cases": [
     {
-      "name": "x",
-      "kind": "tensor",
-      "dtype": ["float32", "int32"],
-      "shape": ["*"]
+      "input": [
+        {"datatype": "int32", "shape": [2, 3], "range": [-2, 2]},
+        {"datatype": "int32", "shape": [2, 3], "range": [-2, 2]}
+      ],
+      "output": [
+        {"datatype": "bool", "shape": [2, 3]}
+      ],
+      "attr": []
     },
     {
-      "name": "y",
-      "kind": "tensor",
-      "dtype": ["float32", "int32"],
-      "shape": ["*"]
-    }
-  ],
-  "outputs": [
-    {
-      "name": "out",
-      "kind": "tensor",
-      "dtype": ["bool"],
-      "shape": ["broadcast(x, y)"]
-    }
-  ],
-  "attributes": [],
-  "test_cases": [
-    {
-      "name": "same_shape_int32",
-      "inputs": [
-        {"name": "x", "dtype": "int32", "shape": [2, 3]},
-        {"name": "y", "dtype": "int32", "shape": [2, 3]}
+      "input": [
+        {"datatype": "float", "shape": [2, 3], "range": [-1.0, 1.0]},
+        {"datatype": "float", "shape": [3], "range": [-1.0, 1.0]}
       ],
-      "outputs": [
-        {"name": "out", "dtype": "bool", "shape": [2, 3]}
-      ]
-    },
-    {
-      "name": "broadcast_float32",
-      "inputs": [
-        {"name": "x", "dtype": "float32", "shape": [2, 3]},
-        {"name": "y", "dtype": "float32", "shape": [3]}
+      "output": [
+        {"datatype": "bool", "shape": [2, 3]}
       ],
-      "outputs": [
-        {"name": "out", "dtype": "bool", "shape": [2, 3]}
-      ]
+      "attr": []
     }
   ],
-  "tolerance": {
-    "rtol": 0.0,
-    "atol": 0.0
-  }
+  "npu_cases": [
+    {
+      "input": [
+        {"datatype": "int32", "shape": [4096, 1024], "range": [-4, 4]},
+        {"datatype": "int32", "shape": [4096, 1024], "range": [-4, 4]}
+      ],
+      "output": [
+        {"datatype": "bool", "shape": [4096, 1024]}
+      ],
+      "attr": []
+    }
+  ]
 }

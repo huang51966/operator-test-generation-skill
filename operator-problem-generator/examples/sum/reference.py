@@ -1,5 +1,5 @@
 import numpy as np
 
 
-def reference(x: np.ndarray) -> np.ndarray:
-    return np.sum(x, axis=1)
+def impl(x: np.ndarray, axis: int, keepdims: bool = False) -> np.ndarray:
+    return np.sum(x, axis=axis, keepdims=keepdims)
